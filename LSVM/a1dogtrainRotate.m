@@ -124,3 +124,6 @@ for x = 1: 2
     DFpr{x} = fpr;
     DScore{x}= testScores;
 end
+dscore='data/dogROCs/rotate/DScore';
+
+save(dscore,'DScore');

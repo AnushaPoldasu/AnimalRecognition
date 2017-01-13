@@ -36,6 +36,6 @@ function histograms = computeHistogramsFromImageList(vocabulary, names)
         bins = sub2ind([numSpatialY, numSpatialX, numWords], binsy,binsx,words); % get all indexes
         histile = zeros(numSpatialY * numSpatialX * numWords, 1) ; % empty histogram
         histile = vl_binsum(histile, ones(size(bins)), bins) ; % add the weight to make histogram
-        histogram = single(histile/sum(histile)); %single precision: 32 bit instead of 64 bit for double 
+        histogram = single(histile/sum(histile)); %single precision 
     end
 end

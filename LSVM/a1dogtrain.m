@@ -125,3 +125,7 @@ for x = 1: 1
     DFpr{x} = fpr;
     DScore{x}= testScores;
 end
+dscore='data/dogROCs/DScore';
+
+save(dscore,'DScore');
+

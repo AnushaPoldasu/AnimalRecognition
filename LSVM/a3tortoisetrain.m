@@ -121,3 +121,6 @@ for z = 1:75
     Tnr{z} = tnr;
     Score{z}= testScores;
 end
+
+tscore='data/tortoiseROCs/Score';
+save(tscore,'Score');

@@ -10,7 +10,7 @@ setup ;
 %encoding = 'vggm128-conv4';
 %encoding = 'vggm128-conv5';
 % encoding = 'vggm128-fc7';
-% encoder = loadEncoder(encoding);
+% encoder = loadEncodervgg(encoding);
 
 % Change the CNN representation
 %encoding = 'caffe-conv1';
@@ -20,6 +20,7 @@ setup ;
 %encoding = 'caffe-conv5';
 % encoding = 'caffe-fc7';
 % encoder = loadEncoderCaffe(encoding);
+
 % Change the CNN representation
 %encoding = 'vggv16-conv1';
 %encoding = 'vggv16-conv2';
@@ -41,48 +42,48 @@ for y = 1:100
     % --------------------------------------------------------------------
     % Stage I: Data Preparation
     % --------------------------------------------------------------------
-%     % step 1 get the splitted training and testing images
-%     fprintf('%s\n','slpit files');
-%     % positive data
-%     spath = 'data/moutaingoat_all';
-%     dpath1 = 'data/moutaingoatTrainI';
-%     dpath2 = 'data/moutaingoatTestI';
-%     randomSplitImgFile(spath, dpath1,dpath2,100); % spath copy to dpath1, dpath1 move 100 to dpath2
-% 
-%     % negative data
-%     spath = 'data/n_all';
-%     dpath1 = 'data/nTrainI';
-%     dpath2 = 'data/nTestI';
-%     randomSplitImgFile(spath, dpath1,dpath2,100);
-%     %----------------------------------------------------------------------
-%     % step 2 generate descriptors for mountaingoat and negative samples
-%     % mountaingoattest
-%     fprintf('%s\n','generate descriptors');
-%     path = 'data/moutaingoatTestI';
-%     mougoattest_names = getImageSet(path);
-%     mougoattest_descriptors = computepsisFromImageList(encoder, mougoattest_names);
-%     % mountaingoattrain
-%     path = 'data/moutaingoatTrainI';
-%     mougoattrain_names = getImageSet(path);
-%     mougoattrain_descriptors = computepsisFromImageList(encoder, mougoattrain_names);
-%     % ntest
-%     path = 'data/nTestI';
-%     ntestM_names = getImageSet(path);
-%     ntestM_descriptors = computepsisFromImageList(encoder, ntestM_names);
-%     % ntrain
-%     path = 'data/nTrainI';
-%     ntrainM_names = getImageSet(path);
-%     ntrainM_descriptors = computepsisFromImageList(encoder,ntrainM_names);
-%     %----------------------------------------------------------------------
-%     % step 3  save the descriptors and names
-%     filename3='data/mougoat_train_psis';
-%     save(filename3,'mougoattrain_descriptors','mougoattrain_names');
-%     filename4='data/mougoat_test_psis';
-%     save(filename4,'mougoattest_descriptors','mougoattest_names');
-%     filename7='data/nM_train_psis';
-%     save(filename7,'ntrainM_descriptors','ntrainM_names');
-%     filename8='data/nM_test_psis';
-%     save(filename8,'ntestM_descriptors','ntestM_names');
+    % step 1 get the splitted training and testing images
+    fprintf('%s\n','slpit files');
+    % positive data
+    spath = 'data/moutaingoat_all';
+    dpath1 = 'data/moutaingoatTrainI';
+    dpath2 = 'data/moutaingoatTestI';
+    randomSplitImgFile(spath, dpath1,dpath2,100); % spath copy to dpath1, dpath1 move 100 to dpath2
+
+    % negative data
+    spath = 'data/n_all';
+    dpath1 = 'data/nTrainI';
+    dpath2 = 'data/nTestI';
+    randomSplitImgFile(spath, dpath1,dpath2,100);
+    %----------------------------------------------------------------------
+    % step 2 generate descriptors for mountaingoat and negative samples
+    % mountaingoattest
+    fprintf('%s\n','generate descriptors');
+    path = 'data/moutaingoatTestI';
+    mougoattest_names = getImageSet(path);
+    mougoattest_descriptors = computediscFromImageList(encoder, mougoattest_names);
+    % mountaingoattrain
+    path = 'data/moutaingoatTrainI';
+    mougoattrain_names = getImageSet(path);
+    mougoattrain_descriptors = computediscFromImageList(encoder, mougoattrain_names);
+    % ntest
+    path = 'data/nTestI';
+    ntestM_names = getImageSet(path);
+    ntestM_descriptors = computediscFromImageList(encoder, ntestM_names);
+    % ntrain
+    path = 'data/nTrainI';
+    ntrainM_names = getImageSet(path);
+    ntrainM_descriptors = computediscFromImageList(encoder,ntrainM_names);
+    %----------------------------------------------------------------------
+    % step 3  save the descriptors and names
+    filename3='data/mougoat_train_disc';
+    save(filename3,'mougoattrain_descriptors','mougoattrain_names');
+    filename4='data/mougoat_test_disc';
+    save(filename4,'mougoattest_descriptors','mougoattest_names');
+    filename7='data/nM_train_disc';
+    save(filename7,'ntrainM_descriptors','ntrainM_names');
+    filename8='data/nM_test_disc';
+    save(filename8,'ntestM_descriptors','ntestM_names');
     %----------------------------------------------------------------------
     % step 4
     % Load training data    
@@ -91,8 +92,8 @@ for y = 1:100
     names = {};
     descriptors = [];
     labels = [];
-    pos = load('data/mougoat_train_psis.mat');
-    neg = load('data/nM_train_psis.mat');
+    pos = load('data/mougoat_train_disc.mat');
+    neg = load('data/nM_train_disc.mat');
     selp = vl_colsubset(1:numel(pos.mougoattrain_names),numPos,'beginning');
     seln = vl_colsubset(1:numel(neg.ntrainM_names),numNeg,'beginning');
     names = horzcat(names, pos.mougoattrain_names(selp), neg.ntrainM_names(seln));
@@ -104,8 +105,8 @@ for y = 1:100
     testNames = {};
     testDescriptors = [];
     testLabels = [];
-    pos = load('data/mougoat_test_psis.mat');
-    neg = load('data/nM_test_psis.mat');
+    pos = load('data/mougoat_test_disc.mat');
+    neg = load('data/nM_test_disc.mat');
     selp = vl_colsubset(1:numel(pos.mougoattest_names),numPos,'beginning');
     seln = vl_colsubset(1:numel(neg.ntestM_names),numNeg,'beginning');
     testNames = {pos.mougoattest_names{:}, neg.ntestM_names{:}};
@@ -150,3 +151,8 @@ for y = 1:100
     MFpr{y} = tnr;
     MScore{y}= testScores;
 end
+mscore='data/moutaingoatROCs3verydeep/MScore';
+% mscore='data/moutaingoatROCs2caffe/MScore';
+% mscore='data/moutaingoatROCs1vgg/MScore';
+
+save(mscore,'MScore');

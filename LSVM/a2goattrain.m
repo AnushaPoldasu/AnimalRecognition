@@ -121,3 +121,5 @@ for y = 1:75
     MTnr{y} = tnr;
     MScore{y}= testScores;
 end
+mscore='data/moutaingoatROCs/MScore';
+save(mscore,'MScore');

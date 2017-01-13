@@ -1,36 +1,36 @@
 
-function psis = computepsisFromImageList(encoder, names)
+function disc = computediscFromImageList(encoder, names)
 
     if numel(names)>1
-        psis = cell(1,numel(names));
+        disc = cell(1,numel(names));
     end
-    for i = 1:length(names)
-       fullPath = names{i} ;
-       psis{i} = encodeImage(encoder, fullPath);
+    for in = 1:length(names)
+       fullPath = names{in} ;
+       disc{in} = encodeImage(encoder, fullPath);
     end
-    psis = [psis{:}] ;
+    disc = [disc{:}] ;
 
-    function psi = encodeImage(encoder, im)
+    function disc = encodeImage(encoder, im)
         if ~iscell(im), im = {im} ; end
-        psi = cell(1,numel(im)) ;
+        disc = cell(1,numel(im)) ;
         if numel(im) > 1
           for i = 1:numel(im)
-            psi{i} = encodeOne(encoder, im{i}) ;
+            disc{i} = encodeOne(encoder, im{i}) ;
           end
         elseif numel(im) == 1
-          psi{1} = encodeOne(encoder, im{1}) ;
+          disc{1} = encodeOne(encoder, im{1}) ;
         end
-        psi = cat(2, psi{:}) ;
+        disc = cat(2, disc{:}) ;
     end
 
 
     % --------------------------------------------------------------------
-    function psi = encodeOne(encoder, im)
+    function disc = encodeOne(encoder, im)
     % --------------------------------------------------------------------
         fprintf('encoding image from %s\n', im) ;
         im = standardizeImage(im) ;
         im_ = bsxfun(@minus, 255*im, encoder.averageColor) ;
         res = vl_simplenn(encoder.net, im_) ;
-        psi = mean(reshape(res(end).x, [], size(res(end).x,3)), 1)' ;
+        disc = mean(reshape(res(end).x, [], size(res(end).x,3)), 1)' ;
     end
 end

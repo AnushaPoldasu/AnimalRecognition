@@ -10,7 +10,7 @@ setup ;
 %encoding = 'vggm128-conv4';
 %encoding = 'vggm128-conv5';
 % encoding = 'vggm128-fc7';
-% encoder = loadEncoder(encoding);
+% encoder = loadEncodervgg(encoding);
 
 % Change the CNN representation
 %encoding = 'caffe-conv1';
@@ -20,6 +20,7 @@ setup ;
 %encoding = 'caffe-conv5';
 % encoding = 'caffe-fc7';
 % encoder = loadEncoderCaffe(encoding);
+
 % Change the CNN representation
 %encoding = 'vggv16-conv1';
 %encoding = 'vggv16-conv2';
@@ -41,46 +42,46 @@ for z = 1:100
     % --------------------------------------------------------------------
     % Stage I: Data Preparation
     % --------------------------------------------------------------------
-%     % step 1 get the splitted training and testing images
-%     % positive data
-%     fprintf('%s\n','slpit files');
-%     spath = 'data/tortoise_all';
-%     dpath1 = 'data/tortoiseTrainI';
-%     dpath2 = 'data/tortoiseTestI';
-%     randomSplitImgFile(spath, dpath1,dpath2,100); % spath copy to dpath1, dpath1 move 100 to dpath2
-%     
-%     % negative dataspath = 'data/n_all';
-%     dpath1 = 'data/nTrainIt';
-%     dpath2 = 'data/nTestIt';
-%     randomSplitImgFile(spath, dpath1,dpath2,100);
-%     %----------------------------------------------------------------------
-%     % step 2 generate histograms for tortoise and negative samples
-%     % tortoise test
-%     path = 'data/tortoiseTestI';
-%     tortoisetest_names = getImageSet(path);
-%     tortoisetest_descriptors = computepsisFromImageList(encoder,tortoisetest_names);
-%     % tortoise train
-%     path = 'data/tortoiseTrainI';
-%     tortoisetrain_names = getImageSet(path);
-%     tortoisetrain_descriptors = computepsisFromImageList(encoder, tortoisetrain_names);
-%     % ntest
-%     path = 'data/nTestIt';
-%     ntestt_names = getImageSet(path);
-%     ntestt_descriptors = computepsisFromImageList(encoder,ntestt_names);
-%     % ntrain
-%     path = 'data/nTrainIt';
-%     ntraint_names = getImageSet(path);
-%     ntraint_descriptors = computepsisFromImageList(encoder,ntraint_names);
-%     %----------------------------------------------------------------------
-%     % step 3  save the descriptors and names
-%     filename5='data/tortoise_train_psis';
-%     save(filename5,'tortoisetrain_descriptors','tortoisetrain_names');
-%     filename6='data/tortoise_test_psis';
-%     save(filename6,'tortoisetest_descriptors','tortoisetest_names');
-%     filename7='data/n_traint_psis';
-%     save(filename7,'ntraint_descriptors','ntraint_names');
-%     filename8='data/n_testt_psis';
-%     save(filename8,'ntestt_descriptors','ntestt_names');
+    % step 1 get the splitted training and testing images
+    % positive data
+    fprintf('%s\n','slpit files');
+    spath = 'data/tortoise_all';
+    dpath1 = 'data/tortoiseTrainI';
+    dpath2 = 'data/tortoiseTestI';
+    randomSplitImgFile(spath, dpath1,dpath2,100); % spath copy to dpath1, dpath1 move 100 to dpath2
+    
+    % negative dataspath = 'data/n_all';
+    dpath1 = 'data/nTrainIt';
+    dpath2 = 'data/nTestIt';
+    randomSplitImgFile(spath, dpath1,dpath2,100);
+    %----------------------------------------------------------------------
+    % step 2 generate histograms for tortoise and negative samples
+    % tortoise test
+    path = 'data/tortoiseTestI';
+    tortoisetest_names = getImageSet(path);
+    tortoisetest_descriptors = computediscFromImageList(encoder,tortoisetest_names);
+    % tortoise train
+    path = 'data/tortoiseTrainI';
+    tortoisetrain_names = getImageSet(path);
+    tortoisetrain_descriptors = computediscFromImageList(encoder, tortoisetrain_names);
+    % ntest
+    path = 'data/nTestIt';
+    ntestt_names = getImageSet(path);
+    ntestt_descriptors = computediscFromImageList(encoder,ntestt_names);
+    % ntrain
+    path = 'data/nTrainIt';
+    ntraint_names = getImageSet(path);
+    ntraint_descriptors = computediscFromImageList(encoder,ntraint_names);
+    %----------------------------------------------------------------------
+    % step 3  save the descriptors and names
+    filename5='data/tortoise_train_disc';
+    save(filename5,'tortoisetrain_descriptors','tortoisetrain_names');
+    filename6='data/tortoise_test_disc';
+    save(filename6,'tortoisetest_descriptors','tortoisetest_names');
+    filename7='data/n_traint_disc';
+    save(filename7,'ntraint_descriptors','ntraint_names');
+    filename8='data/n_testt_disc';
+    save(filename8,'ntestt_descriptors','ntestt_names');
     %----------------------------------------------------------------------
     % step 4
     % Load training data
@@ -89,8 +90,8 @@ for z = 1:100
     names = {};
     descriptors = [];
     labels = [];
-    pos = load('data/tortoise_train_psis.mat');
-    neg = load('data/n_traint_psis.mat');
+    pos = load('data/tortoise_train_disc.mat');
+    neg = load('data/n_traint_disc.mat');
     selp = vl_colsubset(1:numel(pos.tortoisetrain_names),numPos,'beginning');
     seln = vl_colsubset(1:numel(neg.ntraint_names),numNeg,'beginning');
     names = horzcat(names, pos.tortoisetrain_names(selp), neg.ntraint_names(seln));
@@ -102,8 +103,8 @@ for z = 1:100
     testNames = {} ;
     testDescriptors = [] ;
     testLabels = [] ;
-    pos = load('data/tortoise_test_psis') ;
-    neg = load('data/n_testt_psis.mat') ;
+    pos = load('data/tortoise_test_disc') ;
+    neg = load('data/n_testt_disc.mat') ;
     selp = vl_colsubset(1:numel(pos.tortoisetest_names),numPos,'beginning');
     seln = vl_colsubset(1:numel(neg.ntestt_names),numNeg,'beginning');
     testNames = {pos.tortoisetest_names{:}, neg.ntestt_names{:}};
@@ -148,3 +149,8 @@ for z = 1:100
     Fpr{z} = fpr;
     Score{z}= testScores;
 end
+tscore='data/tortoiseROCs3verydeep/Score';
+% tscore='data/tortoiseROCs2caffe/Score';
+% tscore='data/tortoiseROCs1vgg/Score';
+
+save(tscore,'Score');

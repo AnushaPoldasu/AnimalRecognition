@@ -38,31 +38,31 @@ for x = 1: 2
     fprintf('%s\n','generate descriptors');
     path = 'data/dogsTestI';c
     dogtest_names = getImageSet(path);
-    dogtest_descriptors = computepsisFromImageList(encoder, dogtest_names);
+    dogtest_descriptors = computediscFromImageList(encoder, dogtest_names);
     % dogtrain
     path = 'data/dogsTrainI';
     dogtrain_names = getImageSet(path);
-    dogtrain_descriptors = computepsisFromImageList(encoder, dogtrain_names);
+    dogtrain_descriptors = computediscFromImageList(encoder, dogtrain_names);
     % ntest
     path = 'data/nTestId';
     ntestd_names = getImageSet(path);
-    ntest_descriptors = computepsisFromImageList(encoder, ntestd_names);
+    ntest_descriptors = computediscFromImageList(encoder, ntestd_names);
     % ntrain
     path = 'data/nTrainId';
     ntraind_names = getImageSet(path);
-    ntrain_descriptors = computepsisFromImageList(encoder, ntraind_names);
+    ntrain_descriptors = computediscFromImageList(encoder, ntraind_names);
 
     %----------------------------------------------------------------------
     %  step 3 save the descriptors and names
     fprintf('%s\n','save the psi files');
     % save(filename5,'tortoise_train_hist','tortoisetrain_names')
-    filename1='data/dogs_train_psis';
+    filename1='data/dogs_train_disc';
     save(filename1,'dogtrain_descriptors','dogtrain_names');
-    filename2='data/dogs_test_psis';
+    filename2='data/dogs_test_disc';
     save(filename2,'dogtest_descriptors','dogtest_names');
-    filename7='data/n_traind_psis';
+    filename7='data/n_traind_disc';
     save(filename7,'ntrain_descriptors','ntraind_names');
-    filename8='data/n_testd_psis';
+    filename8='data/n_testd_disc';
     save(filename8,'ntest_descriptors','ntestd_names');
     %----------------------------------------------------------------------
     % step 4
@@ -72,8 +72,8 @@ for x = 1: 2
     names = {};
     descriptors = [];
     labels = [];
-    pos = load('data/dogs_train_psis.mat');
-    neg = load('data/n_traind_psis.mat');
+    pos = load('data/dogs_train_disc.mat');
+    neg = load('data/n_traind_disc.mat');
     
     selp = vl_colsubset(1:numel(pos.dogtrain_names),numPos,'beginning');
     seln = vl_colsubset(1:numel(neg.ntraind_names),numNeg,'beginning');
@@ -86,8 +86,8 @@ for x = 1: 2
     testNames = {};
     testDescriptors = [];
     testLabels = [];
-    pos = load('data/dogs_test_psis.mat');
-    neg = load('data/n_testd_psis.mat');
+    pos = load('data/dogs_test_disc.mat');
+    neg = load('data/n_testd_disc.mat');
     
     selp = vl_colsubset(1:numel(pos.dogtest_names),numPos,'beginning');
     seln = vl_colsubset(1:numel(neg.ntestd_names),numNeg,'beginning');
@@ -133,3 +133,8 @@ for x = 1: 2
     DFpr{x} = fpr;
     DScore{x}= testScores;
 end
+dscore='data/dogROCs3verydeep/rotate/DScore';
+% dscore='data/dogROCs2caffe/rotate/DScore';
+% dscore='data/dogROCs1vgg/rotate/DScore';
+
+save(dscore,'DScore');

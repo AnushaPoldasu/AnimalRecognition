@@ -1,4 +1,4 @@
-function encoder = loadEncoder(encoderType)
+function encoder = loadEncodervgg(encoderType)
 
 if nargin < 1
   encoderType = 'vggm128-fc7' ;
