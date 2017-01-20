@@ -1,7 +1,4 @@
-# AnimalRecognition (matlab)
-a project for computer vision        
-
-Object: classifiy three kind of animals: dog, mountain goat and tortoise
+# Classify images of animals using LSVM 
 
 extract Dense-SIFT features and represent images using bag of words model (with spatial tiling)
 train Linear Support Vector Machines(LSVMs) classifier
