@@ -1,15 +1,5 @@
 # AnimalRecognition-CNN
 
-Object: improve the classification performance using CNN encoders
-
-1) extract Dense-SIFT features from images and use Convolutional Neural Network (CNN) encoders to learn features from images
-2) train Linear Support Vector Machines(LSVMs) classifier
-3) visualize the performance by drawing Receiver operating characteristic (ROC) curves and Confidence Interval of True Positive Rate (TPR) and False Positive Rate (FPR) values
-
-Positive dataset: in /data directory, dogs_all, moutaingoat_all and tortoise_all folders store about 500 images for each animal kind.
-Negative dataset: in /data directory, n_all stores about 500 other animal images as negative dataset.
-The original data can be randomly 80:20 splited into XXTrainI and XXTestI (400 training images and 100 test images) using randomSplitImgFile. 
-
 The package contains 
 a1dogtrain.m -- learns and test an image classifier on dog
 a2goattrain.m -- learns and test an image classifier on mountaingoat
